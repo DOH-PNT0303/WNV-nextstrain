@@ -17,5 +17,5 @@ s3_dst: "s3://wamep-nextstrain-jobs/workflows/wnv"
 # Mapping of files to upload
 files_to_upload:
   ncbi.ndjson.zst: data/genbank_all.ndjson
-  metadata.tsv.zst: data/sequences_all.fasta
-  sequences.fasta.zst: data/metadata_all.tsv
+  metadata.tsv.zst: data/metadata_all.tsv
+  sequences.fasta.zst: data/sequences_all.fasta
