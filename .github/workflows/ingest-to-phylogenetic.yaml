@@ -43,7 +43,6 @@ jobs:
     permissions:
       id-token: write
     uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
-    secrets: inherit
     with:
       # Starting with the default docker runtime
       # We can migrate to AWS Batch when/if we need to for more resources or if
