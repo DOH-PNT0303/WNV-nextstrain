@@ -39,6 +39,20 @@ on:
         required: false
 
 jobs:
+  check_permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check if script is executable
+        run: |
+          if [ -x ingest/vendored/upload-to-s3 ]; then
+            echo "Script is executable"
+          else
+            echo "Script is not executable"
+            exit 1
+          fi
   ingest:
     permissions:
       id-token: write
