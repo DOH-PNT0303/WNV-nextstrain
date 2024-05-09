@@ -39,62 +39,10 @@ on:
         required: false
 
 jobs:
-  check_script_path:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: List contents of directory
-        run: |
-          ls -l ingest/vendored
-
-  make_executable:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Make script executable
-        run: |
-          chmod +x ingest/vendored/upload-to-s3
-
-  check_script_path_after_mod:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: List contents of directory
-        run: |
-          ls -l ingest/vendored
-
-  check_permissions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 
-
-      - name: Check if script is executable
-        run: |
-          if [ ! -x ingest/vendored/upload-to-s3 ]; then
-            echo "Script is not executable. Exiting workflow."
-            exit 1
-          fi
-
   ingest:
     permissions:
       id-token: write
     uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
-    secrets: inherit
     with:
       # Starting with the default docker runtime
       # We can migrate to AWS Batch when/if we need to for more resources or if
@@ -102,6 +50,8 @@ jobs:
       runtime: docker
       env: |
         NEXTSTRAIN_DOCKER_IMAGE: ${{ inputs.ingest_image }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         nextstrain build \
           --env AWS_ACCESS_KEY_ID \
