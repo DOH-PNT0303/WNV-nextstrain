@@ -42,39 +42,22 @@ jobs:
   ingest:
     permissions:
       id-token: write
-    steps:
-      - name: Set up secrets for workflow in Nextstrain
-        run: |
-          echo "::set-env name=AWS_ACCESS_KEY_ID::${{ secrets.AWS_ACCESS_KEY_ID }}"
-          echo "::set-env name=AWS_SECRET_ACCESS_KEY::${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
-      - name: Call Workflow in Nextstrain repo
-        uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
-        with:
-          AWS_ACCESS_KEY_ID: ${{ env.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          # Starting with the default docker runtime
-          # We can migrate to AWS Batch when/if we need to for more resources or if
-          # the job runs longer than the GH Action limit of 6 hours.
-          runtime: docker
-          env: |
-            NEXTSTRAIN_DOCKER_IMAGE: ${{ inputs.ingest_image }}
-          run: |
-            nextstrain build \
-              --env AWS_ACCESS_KEY_ID \
-              --env AWS_SECRET_ACCESS_KEY \
-              ingest \
-                upload_all \
-                --configfile build-configs/nextstrain-automation/config.yaml
-          # this points to the upload pattern for all the ingest output
-          # Specifying artifact name to differentiate ingest build outputs from
-          # the phylogenetic build outputs
-          artifact-name: ingest-build-output
-          artifact-paths: |
-            ingest/results/
-            ingest/benchmarks/
-            ingest/logs/
-            ingest/.snakemake/log/
+    uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
+    secrets: inherit
+    with:
+      # Starting with the default docker runtime
+      # We can migrate to AWS Batch when/if we need to for more resources or if
+      # the job runs longer than the GH Action limit of 6 hours.
+      runtime: docker
+      env: |
+        NEXTSTRAIN_DOCKER_IMAGE: ${{ inputs.ingest_image }}
+      run: |
+        nextstrain build \
+          --env AWS_ACCESS_KEY_ID \
+          --env AWS_SECRET_ACCESS_KEY \
+          ingest \
+            upload_all \
+            --configfile build-configs/nextstrain-automation/config.yaml
       # this points to the upload pattern for all the ingest output
       # Specifying artifact name to differentiate ingest build outputs from
       # the phylogenetic build outputs
