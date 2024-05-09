@@ -42,7 +42,7 @@ jobs:
   ingest:
     permissions:
       id-token: write
-    uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
+    uses: DOH-PNT303/.github/.github/workflows/pathogen-repo-build.yaml@master
     secrets: inherit
     with:
       # Starting with the default docker runtime
@@ -116,7 +116,7 @@ jobs:
     if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
     permissions:
       id-token: write
-    uses: nextstrain/.github/.github/workflows/pathogen-repo-build.yaml@master
+    uses: DOH-PNT0303/.github/.github/workflows/pathogen-repo-build.yaml@master
     secrets: inherit
     with:
       # Starting with the default docker runtime
