@@ -52,8 +52,6 @@ jobs:
       env: |
         NEXTSTRAIN_DOCKER_IMAGE: ${{ inputs.ingest_image }}
       run: |
-      chmod +x ingest/vendored/upload-to-s3
-       
         nextstrain build \
           --env AWS_ACCESS_KEY_ID \
           --env AWS_SECRET_ACCESS_KEY \
