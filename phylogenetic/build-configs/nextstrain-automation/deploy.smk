@@ -11,6 +11,5 @@ rule deploy_all:
         deploy_url = config["deploy_url"]
     shell:
         """
-        for file in {input}:
-            aws s3 cp $file {params.deploy_url}
+        aws s3 cp auspice/ {params.deploy_url} --recursive
         """
