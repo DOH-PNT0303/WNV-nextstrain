@@ -38,7 +38,6 @@ rule files:
 
 files = rules.files.params
 
-include: "rules/download_sequences_from_s3.smk"
 include: "rules/subsampling_manual.smk"
 
 if config.get("subsampling", False):
