@@ -11,5 +11,6 @@ rule deploy_all:
         deploy_url = config["deploy_url"]
     shell:
         """
-        nextstrain remote upload {params.deploy_url} {input}
+        for file in {input}:
+            aws s3 cp $file {params.deploy_url}
         """
