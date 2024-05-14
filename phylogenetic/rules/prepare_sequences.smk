@@ -23,18 +23,18 @@ See Augur's usage docs for these commands for more details.
 rule download:
     """Downloading sequences and metadata from s3 bucket"""
     output:
-        sequences = "data/sequences.fasta.zst",
-        metadata = "data/metadata.tsv.zst"
+        sequences = "data/sequences_all.fasta.zst",
+        metadata = "data/metadata_all.tsv.zst"
     params:
         sequences_url = "s3://wamep-nextstrain-jobs/workflows/wnv/sequences.fasta.zst",
         metadata_url = "s3://wamep-nextstrain-jobs/workflows/wnv/metadata.tsv.zst"
     shell:
         """
-        ./vendored/download-from-s3 \
+        aws s3 cp \
         {params.sequences_url:q} \
         {output.sequences}
 
-        ./vendored/download-from-s3 \
+        aws s3 cp \
         {params.metadata_url:q} \
         {output.metadata}
         """
