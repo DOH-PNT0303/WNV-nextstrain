@@ -112,7 +112,7 @@ jobs:
           lookup-only: true
 
   phylogenetic:
-    #needs: [check-new-data]
+    needs: [check-new-data]
     #if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
     permissions:
       id-token: write
