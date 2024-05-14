@@ -112,8 +112,8 @@ jobs:
           lookup-only: true
 
   phylogenetic:
-    needs: [check-new-data]
-    if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
+    #needs: [check-new-data]
+    #if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
     permissions:
       id-token: write
     uses: DOH-PNT0303/.github/.github/workflows/pathogen-repo-build.yaml@master
