@@ -20,6 +20,39 @@ This part of the workflow usually includes the following steps:
 
 See Augur's usage docs for these commands for more details.
 """
+rule download:
+    """Downloading sequences and metadata from s3 bucket"""
+    output:
+        sequences = "data/sequences.fasta.zst",
+        metadata = "data/metadata.tsv.zst"
+    params:
+        sequences_url = "s3://wamep-nextstrain-jobs/workflows/wnv/sequences.fasta.zst",
+        metadata_url = "s3://wamep-nextstrain-jobs/workflows/wnv/metadata.tsv.zst"
+    shell:
+        """
+        ./vendored/download-from-s3 \
+        {params.sequences_url:q} \
+        {output.sequences}
+
+        ./vendored/download-from-s3 \
+        {params.metadata_url:q} \
+        {output.metadata}
+        """
+
+rule decompress:
+    """Decompressing sequences and metadata"""
+    input:
+        sequences = "data/sequences.fasta.zst",
+        metadata = "data/metadata.tsv.zst"
+    output:
+        sequences = "data/sequences.fasta",
+        metadata = "data/metadata.tsv"
+    shell:
+        """
+        zstd -d -c {input.sequences} > {output.sequences}
+        zstd -d -c {input.metadata} > {output.metadata}
+        """
+
 
 rule add_authors:
     message:
