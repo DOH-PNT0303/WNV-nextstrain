@@ -27,7 +27,7 @@ on:
     #  - https://crontab.guru/
     #
     # Runs at 4pm UTC (12pm EDT) since curation by NCBI happens on the East Coast.
-    - cron: '0 16 * * 1/2'
+    - cron: '0 16 * * 1'
 
   workflow_dispatch:
     inputs:
@@ -113,7 +113,7 @@ jobs:
 
   phylogenetic:
     needs: [check-new-data]
-    #if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
+    if: ${{ needs.check-new-data.outputs.cache-hit != 'true' }}
     permissions:
       id-token: write
     uses: DOH-PNT0303/.github/.github/workflows/pathogen-repo-build.yaml@master
